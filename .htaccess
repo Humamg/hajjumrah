@@ -1,0 +1,73 @@
+Options -Indexes
+DirectorySlash Off
+
+# PHP error handling
+php_flag display_errors Off
+php_value error_reporting E_ALL
+
+# UTF-8
+AddDefaultCharset UTF-8
+
+# Security Headers
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options SAMEORIGIN
+Header always set X-XSS-Protection "1; mode=block"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+# Clean URL Routing
+RewriteEngine On
+RewriteBase "/Hajj & Umrah/"
+
+# Skip real files and directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Sitemap and Robots
+RewriteRule ^sitemap\.xml$      sitemap.php [L]
+RewriteRule ^robots\.txt$       robots.php [L]
+
+# Admin panel
+RewriteRule ^admin/?$                   admin/index.php [L]
+RewriteRule ^admin/login$               admin/login.php [L]
+RewriteRule ^admin/logout$              admin/logout.php [L]
+RewriteRule ^admin/dashboard$           admin/dashboard.php [L]
+RewriteRule ^admin/packages/?$          admin/packages.php [L]
+RewriteRule ^admin/packages/add$        admin/packages-add.php [L]
+RewriteRule ^admin/packages/edit/(\d+)$ admin/packages-edit.php?id=$1 [L]
+RewriteRule ^admin/packages/delete/(\d+)$ admin/packages-delete.php?id=$1 [L]
+RewriteRule ^admin/categories/?$        admin/categories.php [L]
+RewriteRule ^admin/hotels/?$            admin/hotels.php [L]
+RewriteRule ^admin/blog/?$              admin/blog.php [L]
+RewriteRule ^admin/blog/add$            admin/blog-add.php [L]
+RewriteRule ^admin/blog/edit/(\d+)$     admin/blog-edit.php?id=$1 [L]
+RewriteRule ^admin/testimonials/?$      admin/testimonials.php [L]
+RewriteRule ^admin/enquiries/?$         admin/enquiries.php [L]
+RewriteRule ^admin/pages/?$             admin/pages.php [L]
+RewriteRule ^admin/media/?$             admin/media.php [L]
+RewriteRule ^admin/seo/?$               admin/seo.php [L]
+RewriteRule ^admin/settings/?$          admin/settings.php [L]
+RewriteRule ^admin/users/?$             admin/users.php [L]
+RewriteRule ^admin/redirects/?$         admin/redirects.php [L]
+
+# Public pages
+RewriteRule ^umrah-packages/?$                          pages/packages.php [L]
+RewriteRule ^umrah-packages/month/([a-z0-9\-]+)$       pages/month.php?month=$1 [L]
+RewriteRule ^umrah-packages/category/([a-z0-9\-]+)$    pages/category.php?cat=$1 [L]
+RewriteRule ^umrah-packages/([a-z0-9\-]+)$             pages/package-detail.php?slug=$1 [L]
+RewriteRule ^blog/?$                                    pages/blog.php [L]
+RewriteRule ^blog/([a-z0-9\-]+)$                       pages/blog-article.php?slug=$1 [L]
+RewriteRule ^about-us$                                  pages/about.php [L]
+RewriteRule ^contact-us$                                pages/contact.php [L]
+RewriteRule ^privacy-policy$                            pages/privacy.php [L]
+RewriteRule ^terms-and-conditions$                      pages/terms.php [L]
+RewriteRule ^cancellation-policy$                       pages/cancellation.php [L]
+
+# Caching for static assets
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|webp|svg|ico|woff|woff2)$">
+    Header set Cache-Control "max-age=2592000, public"
+</FilesMatch>
+
+# GZIP Compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript text/xml application/xml
+</IfModule>
